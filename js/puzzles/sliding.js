@@ -1,4 +1,4 @@
-// Cargo tile slide: move the numbered tiles into order around the empty socket.
+// Water line slide: move the numbered pipe sections into order around the empty socket.
 // The starting board is twelve moves from solved.
 (function () {
   var START = [1, 8, 2, 4, 0, 5, 7, 3, 6];
@@ -19,9 +19,9 @@
     var stopped = false, solving = false, timer;
     var focusAt = 1;
 
-    el.appendChild(mk('h2', {}, 'Cargo tile slide'));
+    el.appendChild(mk('h2', {}, 'Water line slide'));
     el.appendChild(mk('p', { 'class': 'small' },
-      'The cargo bay tiles slipped loose. Slide the tiles around the empty socket until they ' +
+      'The pipe sections slipped loose. Slide them around the empty socket until they ' +
       'read 1 to 8 in order. A tile only moves when it touches the socket. Arrow keys move, ' +
       'Enter or Space slides.'));
 
@@ -137,7 +137,7 @@
 
     function winNow() {
       solving = true;
-      live.textContent = 'The tiles lock into order. Cargo secure.';
+      live.textContent = 'The sections lock into order. Water flows to the dome.';
       buttons.forEach(function (b) { b.disabled = true; });
       reset.disabled = true; skip.disabled = true; back.disabled = true;
       timer = setTimeout(function () { finish(true); }, 1000);

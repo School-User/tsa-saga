@@ -1,22 +1,23 @@
 // Game state: stats, XP, level, flags. Pure logic, no DOM, so it can be tested in Node.
 (function (root) {
-  var KEY = (root.GameMeta && root.GameMeta.key) || 'driftSignal.v1';
+  var KEY = (root.GameMeta && root.GameMeta.key) || 'driftSignalSaga.v1';
   var STATS = ['eng', 'sci', 'emp'];
-  var START_POINTS = 6, MAX_LEVEL = 6, XP_PER_LEVEL = 40;
+  var START_POINTS = 6, MAX_LEVEL = 9, XP_PER_LEVEL = 45;
 
   function levelFor(xp) { return Math.min(MAX_LEVEL, Math.floor(xp / XP_PER_LEVEL) + 1); }
 
   function newGame(alloc) { // alloc: {eng, sci, emp}, each >= 1, total START_POINTS + 3 baseline
     var a = alloc || { eng: 3, sci: 3, emp: 3 };
-    var total = 0;
+    var total = 0, stats = {};
     for (var i = 0; i < STATS.length; i++) {
-      var v = Math.floor(Number(a[STATS[i]]));
-      if (!(v >= 1)) return null;
+      var stat = STATS[i], v = Number(a[stat]);
+      if (!Number.isInteger(v) || v < 1) return null;
+      stats[stat] = v;
       total += v;
     }
     if (total !== START_POINTS + STATS.length) return null; // 9 points: 3 stats at least 1 each
-    return { stats: { eng: a.eng, sci: a.sci, emp: a.emp }, xp: 0, level: 1, spent: 0,
-             flags: {}, level_id: 1, done: {} };
+    return { stats: stats, xp: 0, level: 1, spent: 0, flags: {}, done: {}, journal: [],
+             level_id: 1, furthest: 1, screen: 'chapter-intro' };
   }
 
   // Unspent stat points: one per level gained after level 1.
@@ -47,13 +48,18 @@
   function load() {
     try {
       var s = JSON.parse(root.localStorage.getItem(KEY));
-      if (s && s.stats && typeof s.xp === 'number' && s.flags && s.done) return s;
+      if (s && s.stats && typeof s.xp === 'number' && s.flags && s.done) {
+        if (!Array.isArray(s.journal)) s.journal = [];
+        if (!s.furthest) s.furthest = s.level_id;
+        return s;
+      }
     } catch (e) { /* fall through */ }
     return null;
   }
   function clear() { try { root.localStorage.removeItem(KEY); } catch (e) { /* nothing */ } }
 
-  var api = { STATS: STATS, START_POINTS: START_POINTS, newGame: newGame, points: points, addXp: addXp,
+  var api = { STATS: STATS, START_POINTS: START_POINTS, XP_PER_LEVEL: XP_PER_LEVEL, MAX_LEVEL: MAX_LEVEL,
+              newGame: newGame, points: points, addXp: addXp,
               spend: spend, check: check, award: award, levelFor: levelFor, save: save, load: load, clear: clear };
   if (typeof module !== 'undefined' && module.exports) module.exports = api; else root.State = api;
 })(typeof window !== 'undefined' ? window : globalThis);

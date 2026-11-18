@@ -8,7 +8,8 @@
   function view(d) {
     var node = d.tree.nodes[d.at], s = d.state;
     var choices = d.ended ? [] : (node.choices || []).filter(function (c) {
-      return (!c.needFlag || s.flags[c.needFlag]) && (!c.notFlag || !s.flags[c.notFlag]);
+      return (!c.needFlag || s.flags[c.needFlag]) && (!c.notFlag || !s.flags[c.notFlag]) &&
+        (!c.needAll || c.needAll.every(function (flag) { return s.flags[flag]; }));
     }).map(function (c) {
       var ok = !c.req || s.stats[c.req.stat] >= c.req.min;
       return { text: c.text, locked: !ok, reason: ok ? '' : c.req.stat.toUpperCase() + ' ' + c.req.min + ' needed', raw: c };
@@ -22,8 +23,13 @@
     if (!c || c.locked) return null;
     var raw = c.raw, gained = 0;
     if (raw.setFlag) {
-      // Only one ending can be chosen: picking a new one clears the others (matters if the player reloads mid-conversation).
-      if (raw.setFlag.indexOf('ending_') === 0) Object.keys(d.state.flags).forEach(function (k) { if (k.indexOf('ending_') === 0) delete d.state.flags[k]; });
+      // An ending replaces the previous choice for this chapter only.
+      var prefix = raw.setFlag.match(/^c\d_ending_/);
+      if (prefix) {
+        Object.keys(d.state.flags).forEach(function (flag) {
+          if (flag !== raw.setFlag && flag.indexOf(prefix[0]) === 0) delete d.state.flags[flag];
+        });
+      }
       d.state.flags[raw.setFlag] = true;
     }
     if (raw.xp && raw.id) gained = root.State ? (root.State.award(d.state, raw.id, raw.xp) ? raw.xp : 0) : 0;

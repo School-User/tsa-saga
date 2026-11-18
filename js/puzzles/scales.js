@@ -139,10 +139,11 @@
         return;
       }
       weighings += 1;
-      var leftHeavy = left.indexOf(HEAVY) !== -1;
-      var rightHeavy = right.indexOf(HEAVY) !== -1;
-      var result = leftHeavy ? 'the left pan sinks. It is heavier.'
-        : rightHeavy ? 'the right pan sinks. It is heavier.'
+      // A normal crate weighs two units and the heavy crate weighs three.
+      var leftWeight = 2 * left.length + (left.indexOf(HEAVY) !== -1 ? 1 : 0);
+      var rightWeight = 2 * right.length + (right.indexOf(HEAVY) !== -1 ? 1 : 0);
+      var result = leftWeight > rightWeight ? 'the left pan sinks. It is heavier.'
+        : rightWeight > leftWeight ? 'the right pan sinks. It is heavier.'
         : 'the pans balance.';
       live.textContent = 'Weighing ' + weighings + ' of ' + MAX_WEIGHS + ': ' + result;
       if (weighings >= MAX_WEIGHS) {

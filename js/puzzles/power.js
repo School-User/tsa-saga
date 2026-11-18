@@ -86,7 +86,11 @@
       (function (index) {
         b.addEventListener('click', function () { rotate(index); });
         b.addEventListener('focus', function () {
-          if (sel !== index) { buttons[sel].tabIndex = -1; sel = index; b.tabIndex = 0; }
+          if (sel !== index) {
+            buttons[sel].tabIndex = -1;
+            sel = index;
+            buttons[sel].tabIndex = 0;
+          }
         });
         b.addEventListener('keydown', function (e) {
           var dirs = { ArrowUp: 0, ArrowRight: 1, ArrowDown: 2, ArrowLeft: 3 };

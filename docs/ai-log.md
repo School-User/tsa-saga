@@ -1,0 +1,4 @@
+- 0.000000 | Claude Code | merge spec, chapter structure, e2e playthrough, review of Codex output
+- 0.000000 | Codex (GPT-6.2-Sol) | merge implementation: chapters, loader, chapter cards, journal, finale, themes, tests; puzzle fixes (power focus, scales pan weights, wording)
+- earlier | Codex (image generation) | illustrations assets/ch1-ch3 (AI-generated, decorative, disclose)
+- earlier | Freebuff (DeepSeek) | original puzzle files power, valves, cipher, memory, scales, tuner, lights, assign, sliding

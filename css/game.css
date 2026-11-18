@@ -24,3 +24,21 @@ h1 { font-size: 2.2rem; margin: .5rem 0; } h2 { margin: .5rem 0; }
 
 .hero { display:block; width:100%; aspect-ratio:16/9; object-fit:cover; border-radius:1rem; margin:.5rem 0; background: var(--panel); }
 [tabindex="-1"]:focus { outline: none; }
+
+body[data-chapter="1"] { --accent: #7aa2ff; }
+body[data-chapter="2"] { --accent: #ffb454; }
+body[data-chapter="3"] { --accent: #6fdc8c; }
+
+.chapter-select { list-style: none; padding: 0; margin: 0; }
+.journal-button { justify-self: start; }
+#journal { color: var(--fg); width: min(42rem, calc(100% - 2rem)); max-height: 85vh; margin: auto; }
+#journal::backdrop { background: rgb(5 9 18 / 75%); }
+#journal li + li { margin-top: .5rem; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .screen, #journal[open] { animation: fade-in .22s ease-out; }
+}
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}

@@ -19,9 +19,9 @@
     var stopped = false, solving = false, timer;
     var focusR = 0, focusC = 0;
 
-    el.appendChild(mk('h2', {}, 'Deck lights'));
+    el.appendChild(mk('h2', {}, 'Seed vault locks'));
     el.appendChild(mk('p', { 'class': 'small' },
-      'The cryo deck has gone dark in patches. Each press flips one cell and the four cells ' +
+      'The vault locks are lit in patches. Each press flips one cell and the four cells ' +
       'touching it. Put every cell out. Arrow keys move, Enter or Space presses.'));
 
     if (sci) {
@@ -134,7 +134,7 @@
 
     function winNow() {
       solving = true;
-      live.textContent = 'Every lamp is out. The deck breathes again.';
+      live.textContent = 'Every light is out. The vault opens.';
       grid.querySelectorAll('button').forEach(function (b) { b.disabled = true; });
       reset.disabled = true; skip.disabled = true; back.disabled = true;
       timer = setTimeout(function () { finish(true); }, 1000);
