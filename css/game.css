@@ -1,0 +1,26 @@
+:root { --bg:#0b1020; --panel:#141b33; --fg:#e8ecf8; --soft:#9aa6c8; --accent:#7aa2ff; --good:#5be3a1; --bad:#ff7a8a; --line:#2a3560; }
+* { box-sizing: border-box; }
+body { margin:0; background: var(--bg); color: var(--fg); font: 17px/1.6 system-ui, sans-serif; }
+main { max-width: 46rem; margin: 0 auto; padding: 1rem; }
+h1 { font-size: 2.2rem; margin: .5rem 0; } h2 { margin: .5rem 0; }
+.lead { color: var(--soft); font-size: 1.15rem; }
+.small { font-size: .9rem; color: var(--soft); }
+.skip { position:absolute; left:-999px; } .skip:focus { left:1rem; top:1rem; background:#fff; color:#000; padding:.5rem; z-index:9; }
+.btn { font: inherit; color: var(--fg); background: var(--accent); color:#071030; border: 2px solid var(--accent); border-radius:.75rem; padding:.6rem 1rem; margin:.25rem .25rem .25rem 0; cursor:pointer; font-weight:600; }
+.btn.ghost { background: transparent; color: var(--accent); }
+.btn.small { padding:.2rem .6rem; }
+.btn.locked, .btn:disabled { opacity:.5; cursor:not-allowed; background: transparent; color: var(--soft); border-color: var(--line); }
+.btn:focus-visible { outline: 3px solid #fff; outline-offset: 2px; }
+.hud, .panel { background: var(--panel); border:1px solid var(--line); border-radius:1rem; padding:.9rem 1.1rem; margin:.5rem 0; }
+.hud { display:grid; gap:.4rem; }
+.meter { height:.6rem; background: var(--bg); border-radius:1rem; overflow:hidden; } .meter span { display:block; height:100%; background: var(--good); }
+.levelup { color: var(--good); }
+.scene { font-size:1.1rem; }
+.log { list-style:none; padding:0; color: var(--soft); min-height: 3rem; } .log li { margin:.2rem 0; }
+.hotspots { display:flex; flex-wrap:wrap; }
+.who { color: var(--accent); font-weight:700; margin:0; }
+.row { display:flex; align-items:center; gap:.5rem; margin:.3rem 0; } .statname { min-width:10rem; }
+@media (prefers-reduced-motion: no-preference) { .meter span { transition: width .4s; } }
+
+.hero { display:block; width:100%; aspect-ratio:16/9; object-fit:cover; border-radius:1rem; margin:.5rem 0; background: var(--panel); }
+[tabindex="-1"]:focus { outline: none; }
