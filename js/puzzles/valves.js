@@ -25,6 +25,7 @@
     el.appendChild(mk('h2', {}, 'Life support valves'));
     el.appendChild(mk('p', { 'class': 'small' },
       'Four valves feed the ring that keeps the ship breathing. Open them in the right order. ' +
+      'Check the maintenance log in Life Support for a clue. ' +
       'Click a valve, or focus it and press Enter or Space.'));
 
     var clues = mk('div', { 'class': 'panel' });

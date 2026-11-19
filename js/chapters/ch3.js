@@ -30,6 +30,7 @@ window.Chapters[3] = {
   window.Chapters[3].levels[0] = { id: 1, title: 'Seed Vault',
     image: 'assets/ch3/level1.webp', imageAlt: 'Illustration: a seed vault with glass drawers of seeds and a round vault door with a four by four grid of lock-lights.',
     intro: 'Rows of frosted glass drawers, each holding a thousand seeds from a world that no longer exists. A grid of sixteen lock-lights glows on the vault door, mostly lit. The whole room smells of cold soil.',
+    goals: [{ text: 'Open the seed vault', needFlag: 'vault_open' }],
     hotspots: [
       { id: 'look1', label: 'Look at the seed drawers', text: 'Labels in a dead language. Tomato. Rice. A flower you do not know the name of. Each drawer hums softly.', xp: 5 },
       { id: 'fern1', label: 'Answer Fern', dialogue: fern },
@@ -55,6 +56,9 @@ window.Chapters[3] = {
   window.Chapters[3].levels[1] = { id: 2, title: 'The Dome',
     image: 'assets/ch3/level2.webp', imageAlt: 'Illustration: the inside of a great glass dome with three greenhouses side by side and a notice board.',
     intro: 'A great glass dome, three greenhouses growing side by side: Dome, Vine and Moss. A notice board lists three botanists, Ana, Bo and Cy, and a rota that nobody can agree on.',
+    goals: [
+      { text: 'Fix the rota', needFlag: 'crew_set' },
+      { text: 'Settle the argument', needFlag: 'crew_calm' } ],
     hotspots: [
       { id: 'look2', label: 'Read the notice board', text: 'Handwritten notes: "Cy does not tend Vine." "Not my house." "Bo, where are you?" The Moss house is wilting.', xp: 5 },
       { id: 'quarrel', label: 'Calm the argument', dialogue: quarrel },
@@ -84,6 +88,9 @@ window.Chapters[3] = {
   window.Chapters[3].levels[2] = { id: 3, title: 'Water Room',
     image: 'assets/ch3/level3.webp', imageAlt: 'Illustration: a water room with a tangle of ceiling pipes and a frame of eight numbered pipe sections with one empty slot.',
     intro: 'Pipes cross the ceiling in a tangle. Eight numbered pipe sections sit in a frame with one empty slot. Until they are in order, no water reaches the dome.',
+    goals: [
+      { text: 'Restore water to the dome', needFlag: 'water_flows' },
+      { text: 'Decide what happens to the seeds', needFlag: 'contacted' } ],
     hotspots: [
       { id: 'look3', label: 'Listen to the pipes', text: 'A slow drip, then silence. Somewhere up the line there is a missing segment of the tangle.', xp: 5 },
       { id: 'p_sliding', label: 'Rebuild the water line', puzzle: 'sliding', setFlag: 'water_flows', xp: 30,

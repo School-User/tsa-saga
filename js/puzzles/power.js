@@ -42,9 +42,11 @@
 
     el.appendChild(mk('h2', {}, 'Power routing'));
     el.appendChild(mk('p', { 'class': 'small' },
-      'Power enters at the source on the left and must reach the door on the right. ' +
-      'Click a fitting, or focus it (arrow keys move) and press Enter or Space, to turn it a quarter turn.' +
+      'Connect IN (power source, left) to OUT (pressure door, right). ' +
+      'Click a fitting, or focus it with the arrow keys and press Enter or Space, to turn it clockwise.' +
       (hint ? ' Faint dots mark the conductors on the live route.' : '')));
+    el.appendChild(mk('p', { 'class': 'small' },
+      'Example: one turn changes a vertical fitting (│) to horizontal (─).'));
 
     var count = mk('p', { 'class': 'small' }, 'Rotations: 0');
     el.appendChild(count);

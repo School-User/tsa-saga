@@ -2,11 +2,12 @@
 (function () {
   var root = document.getElementById('game');
   var journal = document.getElementById('journal');
+  var help = document.getElementById('how-to');
   var LEVELS = window.Levels;
   var CHAPTERS = window.Chapters;
   var META = window.GameMeta;
   var STAT_NAMES = { eng: 'Engineering', sci: 'Science', emp: 'Empathy' };
-  var S, screen, journalButton;
+  var S, screen;
   var logLines = [];
   var journalTotal = LEVELS.reduce(function (total, lvl) {
     return total + lvl.hotspots.filter(hasJournalEntry).length;
@@ -25,7 +26,7 @@
   }
 
   function focusScreen() {
-    if (journal.open) return;
+    if (journal.open || help.open) return;
     var heading = screen.querySelector('.panel h2, .who') || screen.querySelector('h1, h2, .hud strong');
     if (heading) focusHeading(heading);
   }
@@ -70,7 +71,7 @@
       screen.appendChild(btn('Continue', function () { S = saved; resume(); }));
     }
     screen.appendChild(btn('New game', create, saved ? 'ghost' : ''));
-    screen.appendChild(btn('How to play', function () { howTo(title); }, 'ghost'));
+    screen.appendChild(btn('How to play', howTo, 'ghost'));
     if (saved) {
       var select = el('section', { 'aria-labelledby': 'chapter-select' });
       select.appendChild(el('h2', { id: 'chapter-select' }, 'Chapter select'));
@@ -91,11 +92,9 @@
     screen.appendChild(el('p', { 'class': 'small' }, 'Progress saves in this browser.'));
   }
 
-  // Goal, controls and systems on one screen. `back` returns to the screen that opened it.
-  function howTo(back) {
-    clear(S && LEVELS[S.level_id - 1] ? LEVELS[S.level_id - 1].chapter : 1);
-    var panel = el('section', { 'class': 'panel howto' });
-    panel.appendChild(el('h2', {}, 'How to play'));
+  function howTo(event) {
+    var panel = help;
+    var heading = prepareDialog(panel, 'how-to-heading', 'How to play');
     panel.appendChild(el('p', {}, 'You are the Navigator of a survey fleet. Follow a quiet signal through 3 chapters and 9 levels. ' +
       'There is no fighting: every level is solved by exploring, talking and solving a puzzle.'));
     panel.appendChild(el('h3', {}, 'Goal of each level'));
@@ -111,6 +110,7 @@
      ['Enter or Space', 'Press the selected button or tile'],
      ['Arrow keys', 'Move around puzzle grids and turn dials'],
      ['Journal button', 'Read the clues and notes you have found'],
+     ['Esc', 'Close How to play or the Journal'],
      ['Menu button', 'Return to the title screen (progress is kept)']].forEach(function (row) {
       var tr = el('tr');
       tr.appendChild(el('th', { scope: 'row' }, row[0]));
@@ -124,8 +124,7 @@
       'Looking around and solving puzzles earns XP. Each new rank gives you a point to add to any stat.'));
     panel.appendChild(el('h3', {}, 'Choices'));
     panel.appendChild(el('p', {}, 'Your choices change how each chapter ends. Every stat build can finish the game.'));
-    screen.appendChild(panel);
-    screen.appendChild(btn('Back', back));
+    openDialog(panel, heading, event.currentTarget);
   }
 
   function create() {
@@ -212,8 +211,10 @@
   function chapterComplete(lvl) {
     clear(lvl.chapter);
     screen.appendChild(el('h1', {}, 'Chapter complete'));
-    screen.appendChild(el('p', { 'class': 'lead' }, CHAPTERS[lvl.chapter].title));
+    var chapter = CHAPTERS[lvl.chapter];
+    screen.appendChild(el('p', { 'class': 'lead' }, chapter.title));
     screen.appendChild(el('p', {}, outcome(lvl.chapter).text));
+    if (chapter.nextStop) screen.appendChild(el('p', {}, chapter.nextStop));
     screen.appendChild(el('p', {}, rankText()));
     screen.appendChild(btn('Continue', function () {
       if (LEVELS[lvl.id]) enterLevel(lvl.id + 1);
@@ -254,8 +255,10 @@
       'aria-valuemax': '100', 'aria-valuenow': String(pct), 'aria-label': 'XP to next rank' });
     meter.appendChild(el('span', { style: 'width:' + pct + '%' }));
     bar.appendChild(meter);
-    bar.appendChild(btn('Journal', openJournal, 'ghost small journal-button'));
-    bar.appendChild(btn('How to play', function () { howTo(resume); }, 'ghost small'));
+    var tools = el('div');
+    tools.appendChild(btn('Journal', openJournal, 'ghost small'));
+    tools.appendChild(btn('How to play', howTo, 'ghost small'));
+    bar.appendChild(tools);
 
     if (inRoom && State.points(S) > 0) {
       var up = el('div', { 'class': 'levelup' }, 'Level up! Add a point ');
@@ -266,6 +269,8 @@
         add.disabled = S.stats[stat] >= 9;
         up.appendChild(add);
       });
+      up.appendChild(el('p', { 'class': 'small stat-help' }, lvl.statHelp ||
+        '+ENG unlocks repair options · +SCI finds clues · +EMP opens trust-building replies'));
       bar.appendChild(up);
     }
     return bar;
@@ -279,12 +284,28 @@
     }
   }
 
+  function prepareDialog(dialog, id, title) {
+    var heading = el('h2', { id: id }, title);
+    dialog.replaceChildren(heading, btn('Close', function () { dialog.close(); }, 'ghost small'));
+    return heading;
+  }
+
+  function openDialog(dialog, heading, opener) {
+    dialog.addEventListener('close', function () {
+      if (opener.isConnected) opener.focus();
+      else focusScreen();
+    }, { once: true });
+    dialog.showModal();
+    focusHeading(heading);
+  }
+
+  // Keep dialog keys away from puzzle shortcuts on the document.
+  [journal, help].forEach(function (dialog) {
+    dialog.addEventListener('keydown', function (event) { event.stopPropagation(); });
+  });
+
   function openJournal(event) {
-    journalButton = event.currentTarget;
-    journal.replaceChildren();
-    var heading = el('h2', { id: 'journal-heading' }, 'Journal');
-    journal.appendChild(heading);
-    journal.appendChild(btn('Close', function () { journal.close(); }, 'ghost small'));
+    var heading = prepareDialog(journal, 'journal-heading', 'Journal');
     if (!S.journal.length) journal.appendChild(el('p', {}, 'No entries yet.'));
     Object.keys(CHAPTERS).forEach(function (chapter) {
       var entries = S.journal.filter(function (entry) {
@@ -298,16 +319,23 @@
       });
       journal.appendChild(list);
     });
-    journal.showModal();
-    focusHeading(heading);
+    openDialog(journal, heading, event.currentTarget);
   }
 
-  journal.addEventListener('close', function () {
-    if (journalButton && journalButton.isConnected) journalButton.focus();
-    else focusScreen();
-  });
-  // The decoder listens for arrow keys on the document. Keep journal keys in the dialog.
-  journal.addEventListener('keydown', function (event) { event.stopPropagation(); });
+  function showGoals(lvl, inPuzzle) {
+    if (!lvl.goals || !lvl.goals.length) return;
+    var line = el('div', { 'class': inPuzzle ? 'goals puzzle-goals' : 'goals' });
+    line.appendChild(el('strong', {}, lvl.goals.length === 1 ? 'Goal:' : 'Goals:'));
+    lvl.goals.forEach(function (goal) {
+      var complete = S.flags[goal.needFlag];
+      var item = el('span', {}, goal.text + ' ');
+      item.appendChild(el('span', { 'aria-hidden': 'true', 'class': complete ? 'goal-done' : '' },
+        complete ? '✓' : '○'));
+      item.appendChild(el('span', { 'class': 'visually-hidden' }, complete ? '(complete)' : '(pending)'));
+      line.appendChild(item);
+    });
+    screen.appendChild(line);
+  }
 
   function play(msg) {
     var lvl = LEVELS[S.level_id - 1];
@@ -322,6 +350,7 @@
     var log = el('ul', { 'class': 'log' });
     logLines.forEach(function (line) { log.appendChild(el('li', {}, line)); });
     screen.appendChild(log);
+    showGoals(lvl);
     var box = el('div', { 'class': 'hotspots' });
     lvl.hotspots.forEach(function (h) {
       if ((h.needFlag && !S.flags[h.needFlag]) || (h.notFlag && S.flags[h.notFlag])) return;
@@ -350,6 +379,7 @@
   function runPuzzle(lvl, h) {
     clear(lvl.chapter);
     screen.appendChild(hud(lvl, false));
+    showGoals(lvl, true);
     var panel = el('section', { 'class': 'panel', 'aria-label': h.label });
     screen.appendChild(panel);
     var ctx = { stat: function (stat) { return S.stats[stat]; } };
@@ -371,6 +401,7 @@
     function turn() {
       clear(lvl.chapter);
       screen.appendChild(hud(lvl, false));
+      showGoals(lvl);
       var v = Dialogue.view(dialogue);
       var panel = el('section', { 'class': 'panel', 'aria-label': 'Conversation' });
       panel.appendChild(el('p', { 'class': 'who' }, v.speaker));

@@ -6,10 +6,11 @@ window.Chapters[1] = {
   intro: 'You are the Navigator of the survey fleet. You wake aboard the drifting Meridian near a dying star. The ship AI, ORI, is trying to reach you.',
   image: 'assets/ch1/title.webp',
   imageAlt: 'Illustration: a small worn survey ship drifting beside a huge dying red star.',
+  nextStop: 'The Veil’s star chart points to your next destination, Harbor Nine.',
   endings: [
-    { flag: 'ending_peace', text: 'You answered the signal as a friend. Two lonely ships found each other. The Veil sends a star chart pointing to Harbor Nine.' },
-    { flag: 'ending_study', text: 'You mapped the signal and saved its patterns for the fleet. Knowledge was the cargo that mattered. The Veil sends a star chart pointing to Harbor Nine.' },
-    { flag: 'ending_quiet', text: 'You repaired the Meridian and set a new course. The signal still plays, waiting for the next listener. The Veil sends a star chart pointing to Harbor Nine.' } ],
+    { flag: 'ending_peace', text: 'The Veil comes aboard the Meridian and keeps ORI company on the voyage.' },
+    { flag: 'ending_study', text: 'You carry a recording of the Veil so future navigators can hear its voice.' },
+    { flag: 'ending_quiet', text: 'The Veil stays behind and keeps broadcasting for the next listener.' } ],
   levels: []
 };
 
@@ -30,12 +31,13 @@ window.Chapters[1] = {
   window.Chapters[1].levels[0] = { id: 1, title: 'Cryo Deck',
     image: 'assets/ch1/level1.webp', imageAlt: 'Illustration: frosted cryo pods in cold blue light, one open, and a dead pressure door.',
     intro: 'Cold blue light. Frost on a row of sleeping pods, all dark except yours. A pressure door at the far end is dead. Somewhere, a voice is trying to start.',
+    goals: [{ text: 'restore power to open the pressure door', needFlag: 'power_on' }],
     hotspots: [
-      { id: 'look', label: 'Look around', text: 'Seven pods, six empty and cold. Name plates scratched by time. A faint hum comes from the walls.', xp: 5 },
-      { id: 'badge', label: 'Check your pod', text: 'Your badge: NAVIGATOR. Under it, a sticky note in your own handwriting: "If you read this, trust the voice. Do not trust the clocks."', xp: 5 },
       { id: 'ori1', label: 'Answer the voice', dialogue: ori },
       { id: 'p_power', label: 'Repair the power grid', puzzle: 'power', setFlag: 'power_on', xp: 30,
         text: 'Power surges through the grid and the pressure door unlocks with a long, tired sigh.' },
+      { id: 'look', label: 'Look around', text: 'Seven pods, six empty and cold. Name plates scratched by time. A faint hum comes from the walls.', xp: 5 },
+      { id: 'badge', label: 'Check your pod', text: 'Your badge: NAVIGATOR. Under it, a sticky note in your own handwriting: "If you read this, trust the voice. Do not trust the clocks."', xp: 5 },
       { id: 'door1', label: 'Go through the door', needFlag: 'power_on', exit: true } ] };
 })();
 
@@ -60,6 +62,10 @@ window.Chapters[1] = {
   window.Chapters[1].levels[1] = { id: 2, title: 'Life Support',
     image: 'assets/ch1/level2.webp', imageAlt: 'Illustration: four valve wheels, pipes and a gauge on a life-support wall.',
     intro: 'The air tastes of metal. Four valves on the wall, labelled A to D, feed the ring that keeps the ship breathing. Beyond them, a sealed lab door. A red gauge ticks the wrong way.',
+    goals: [
+      { text: 'Restore air', needFlag: 'air_ok' },
+      { text: 'Get ORI to open the lab', needFlag: 'lab_open' } ],
+    statHelp: 'Reach ENG 4 to offer a memory repair, SCI 4 to challenge protocol and get decoder clues, or EMP 4 to reassure ORI.',
     hotspots: [
       { id: 'gauges', label: 'Read the gauges', text: 'Oxygen is at 61 percent and falling slowly. The valves must be opened in the right order or the pressure will surge.', xp: 5 },
       { id: 'p_valves', label: 'Work the valves', puzzle: 'valves', setFlag: 'air_ok', xp: 30,
@@ -94,6 +100,9 @@ window.Chapters[1] = {
   window.Chapters[1].levels[2] = { id: 3, title: 'The Signal',
     image: 'assets/ch1/level3.webp', imageAlt: 'Illustration: a glass dome facing a dying star, with pulses of light on a screen.',
     intro: 'The lab is a dome of glass facing the dying star. A single repeating pulse flickers across the main screen. It is not noise. It is a message, shifted and scrambled, and it has been repeating for longer than you have been alive.',
+    goals: [
+      { text: 'Decode the message', needFlag: 'decoded' },
+      { text: 'Choose how to answer the Veil', needFlag: 'contacted' } ],
     hotspots: [
       { id: 'listen', label: 'Listen to the signal', text: 'Three pulses, a gap, three pulses. The rhythm is too patient to be a machine error.', xp: 5 },
       { id: 'p_cipher', label: 'Decode the message', puzzle: 'cipher', setFlag: 'decoded', xp: 30,

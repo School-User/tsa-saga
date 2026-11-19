@@ -30,6 +30,7 @@ window.Chapters[2] = {
   window.Chapters[2].levels[0] = { id: 1, title: 'Docking Ring',
     image: 'assets/ch2/level1.webp', imageAlt: 'Illustration: four glowing round pads with different shapes on a control desk before a nebula window.',
     intro: 'Static hisses on every channel. The docking ring around Harbor Nine is dark, and four coloured pads on the control desk wait for a pattern. Outside the window, a small ship turns slowly in the nebula light.',
+    goals: [{ text: 'Light the docking ring', needFlag: 'ring_lit' }],
     hotspots: [
       { id: 'look1', label: 'Look out the window', text: 'Three ships hover at the edge of the nebula, each a faint dot of running lights. Everybody is tired.', xp: 5 },
       { id: 'radio1', label: 'Answer the radio', dialogue: tamsin },
@@ -56,6 +57,9 @@ window.Chapters[2] = {
   window.Chapters[2].levels[1] = { id: 2, title: 'Cargo Bay',
     image: 'assets/ch2/level2.webp', imageAlt: 'Illustration: nine identical crates in rows and a large brass balance scale, with a small friendly robot.',
     intro: 'Rows of identical grey crates. One of the nine is far heavier than the rest, and a rattled dock robot rolls back and forth in front of the manifest terminal. The airlock to the tower waits behind a lifting rig that will only lift the heavy crate.',
+    goals: [
+      { text: 'Find the heavy crate', needFlag: 'cargo_ok' },
+      { text: 'Get Pip to unlock the manifest', needFlag: 'manifest' } ],
     hotspots: [
       { id: 'look2', label: 'Look at the crates', text: 'Nine crates, all the same size and colour. Only a balance scale will tell them apart.', xp: 5 },
       { id: 'pip', label: 'Talk to Pip', dialogue: pip },
@@ -85,6 +89,9 @@ window.Chapters[2] = {
   window.Chapters[2].levels[2] = { id: 3, title: 'Beacon Tower',
     image: 'assets/ch2/level3.webp', imageAlt: 'Illustration: a glass beacon tower room with two dials and a glowing tuning screen.',
     intro: 'A glass room at the top of Harbor Nine. A single dial pair, frequency and phase, must be tuned to cut through the nebula static before the beacon can reach all three ships.',
+    goals: [
+      { text: 'Tune the beacon', needFlag: 'beacon_tuned' },
+      { text: 'Guide the lost ships in', needFlag: 'contacted' } ],
     hotspots: [
       { id: 'look3', label: 'Study the static', text: 'It is not random. Under the hiss there is a faint steady tone, if you can find the right setting.', xp: 5 },
       { id: 'p_tuner', label: 'Tune the beacon', puzzle: 'tuner', setFlag: 'beacon_tuned', xp: 30,

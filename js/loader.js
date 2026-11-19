@@ -37,6 +37,7 @@
       levels.push(Object.assign({}, level, {
         id: levels.length + 1,
         chapter: Number(number),
+        goals: (level.goals || []).map(namespaced),
         hotspots: level.hotspots.map(hotspot)
       }));
     });

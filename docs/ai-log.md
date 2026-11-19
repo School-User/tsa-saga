@@ -2,3 +2,4 @@
 - 0.000000 | Codex (GPT-6.2-Sol) | merge implementation: chapters, loader, chapter cards, journal, finale, themes, tests; puzzle fixes (power focus, scales pan weights, wording)
 - earlier | Codex (image generation) | illustrations assets/ch1-ch3 (AI-generated, decorative, disclose)
 - earlier | Freebuff (DeepSeek) | original puzzle files power, valves, cipher, memory, scales, tuner, lights, assign, sliding
+- 2026-11-18 | Codex (gpt-6.2-sol) | Added goal progress to all nine levels, improved Cryo Deck and Life Support guidance, added a live cipher alphabet and Science clue, clarified the Veil outcomes, made How to play preserve puzzle state, and documented the three opening bypasses.

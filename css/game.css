@@ -15,6 +15,13 @@ h1 { font-size: 2.2rem; margin: .5rem 0; } h2 { margin: .5rem 0; }
 .hud { display:grid; gap:.4rem; }
 .meter { height:.6rem; background: var(--bg); border-radius:1rem; overflow:hidden; } .meter span { display:block; height:100%; background: var(--good); }
 .levelup { color: var(--good); }
+.stat-help { margin: .25rem 0 0; }
+.goals { display:flex; flex-wrap:wrap; gap: 0 .6rem; margin:.5rem 0; font-size:.9rem; }
+.puzzle-goals { position:sticky; top:0; z-index:1; background:var(--bg); padding:.4rem 0; }
+.goal-done { color:var(--good); }
+.visually-hidden { position:absolute; width:1px; height:1px; padding:0; overflow:hidden; clip-path:inset(50%); white-space:nowrap; }
+.cipher-map { margin:.4rem 0; line-height:1.4; }
+.cipher-map code { display:block; color:var(--fg); }
 .scene { font-size:1.1rem; }
 .log { list-style:none; padding:0; color: var(--soft); min-height: 3rem; } .log li { margin:.2rem 0; }
 .hotspots { display:flex; flex-wrap:wrap; }
@@ -30,13 +37,12 @@ body[data-chapter="2"] { --accent: #ffb454; }
 body[data-chapter="3"] { --accent: #6fdc8c; }
 
 .chapter-select { list-style: none; padding: 0; margin: 0; }
-.journal-button { justify-self: start; }
-#journal { color: var(--fg); width: min(42rem, calc(100% - 2rem)); max-height: 85vh; margin: auto; }
-#journal::backdrop { background: rgb(5 9 18 / 75%); }
+.game-dialog { color: var(--fg); width: min(42rem, calc(100% - 2rem)); max-height: 85vh; margin: auto; }
+.game-dialog::backdrop { background: rgb(5 9 18 / 75%); }
 #journal li + li { margin-top: .5rem; }
 
 @media (prefers-reduced-motion: no-preference) {
-  .screen, #journal[open] { animation: fade-in .22s ease-out; }
+  .screen, .game-dialog[open] { animation: fade-in .22s ease-out; }
 }
 @keyframes fade-in {
   from { opacity: 0; }

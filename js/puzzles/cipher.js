@@ -2,6 +2,7 @@
 // The incoming signal is shifted left by 7; arrow keys or the buttons change the shift live.
 (function () {
   var SIGNAL = 'DL HYL UVA HSVUL';
+  var ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
   var ANSWER = 7;
   var FAIL_AT = 3;
 
@@ -37,7 +38,7 @@
 
     if (sci) {
       el.appendChild(mk('p', { 'class': 'small' },
-        'Hint: The most common letter in English is E.'));
+        'SCI clue: A known signal marker pairs incoming L with decoded E. Turn the shift until they line up.'));
     }
 
     var controls = mk('div', { 'class': 'row' });
@@ -50,6 +51,12 @@
     plus.addEventListener('click', function () { adjust(1); });
     controls.appendChild(minus); controls.appendChild(shiftLine); controls.appendChild(plus);
     el.appendChild(controls);
+
+    var mapping = mk('p', { 'class': 'small cipher-map' }, 'Alphabet mapping (incoming → decoded)');
+    mapping.appendChild(mk('code', {}, ALPHABET));
+    var decodedAlphabet = mk('code');
+    mapping.appendChild(decodedAlphabet);
+    el.appendChild(mapping);
 
     var output = mk('p', { 'class': 'scene', 'aria-live': 'polite',
       style: 'font-family:ui-monospace,monospace;letter-spacing:.18em;margin:.25rem 0;' +
@@ -78,6 +85,7 @@
 
     function paint() {
       shiftLine.textContent = 'Shift: ' + shift;
+      decodedAlphabet.textContent = decode(ALPHABET, shift);
       output.textContent = decode(SIGNAL, shift);
       minus.setAttribute('aria-label', 'Shift down, currently ' + shift);
       plus.setAttribute('aria-label', 'Shift up, currently ' + shift);
