@@ -8,7 +8,10 @@ h1 { font-size: 2.2rem; margin: .5rem 0; } h2 { margin: .5rem 0; }
 .skip { position:absolute; left:-999px; } .skip:focus { left:1rem; top:1rem; background:#fff; color:#000; padding:.5rem; z-index:9; }
 .btn { font: inherit; color: var(--fg); background: var(--accent); color:#071030; border: 2px solid var(--accent); border-radius:.75rem; padding:.6rem 1rem; margin:.25rem .25rem .25rem 0; cursor:pointer; font-weight:600; }
 .btn.ghost { background: transparent; color: var(--accent); }
-.btn.small { padding:.2rem .6rem; }
+.btn.small { padding:.45rem .8rem; min-height:2.75rem; }
+.btn:not(:disabled):not(.locked):hover { filter: brightness(1.15); }
+.btn.ghost:not(:disabled):not(.locked):hover { background: rgb(255 255 255 / 8%); }
+.btn:not(:disabled):not(.locked):active { transform: translateY(1px); }
 .btn.locked, .btn:disabled { opacity:.5; cursor:not-allowed; background: transparent; color: var(--soft); border-color: var(--line); }
 .btn:focus-visible { outline: 3px solid #fff; outline-offset: 2px; }
 .hud, .panel { background: var(--panel); border:1px solid var(--line); border-radius:1rem; padding:.9rem 1.1rem; margin:.5rem 0; }
@@ -23,7 +26,7 @@ h1 { font-size: 2.2rem; margin: .5rem 0; } h2 { margin: .5rem 0; }
 .cipher-map { margin:.4rem 0; line-height:1.4; }
 .cipher-map code { display:block; color:var(--fg); }
 .scene { font-size:1.1rem; }
-.log { list-style:none; padding:0; color: var(--soft); min-height: 3rem; } .log li { margin:.2rem 0; }
+.log { list-style:none; padding:0; color: var(--soft); min-height: 3rem; } .log:empty { min-height: 0; margin: 0; } .log li { margin:.2rem 0; }
 .hotspots { display:flex; flex-wrap:wrap; }
 .who { color: var(--accent); font-weight:700; margin:0; }
 .row { display:flex; align-items:center; gap:.5rem; margin:.3rem 0; } .statname { min-width:10rem; }
@@ -52,3 +55,4 @@ body[data-chapter="3"] { --accent: #6fdc8c; }
 .controls th, .controls td { text-align: left; padding: .4rem .6rem; border-bottom: 1px solid var(--line); vertical-align: top; }
 .controls th { white-space: nowrap; }
 @media (max-width: 480px) { .controls th { white-space: normal; } }
+@media (max-width: 480px) { .hero { max-height: 12rem; } }

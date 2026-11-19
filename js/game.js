@@ -27,7 +27,7 @@
 
   function focusScreen() {
     if (journal.open || help.open) return;
-    var heading = screen.querySelector('.panel h2, .who') || screen.querySelector('h1, h2, .hud strong');
+    var heading = screen.querySelector('.log .new, .panel h2, .who') || screen.querySelector('h1, h2, .hud strong');
     if (heading) focusHeading(heading);
   }
 
@@ -108,7 +108,7 @@
     [['Mouse click or tap', 'Choose an action, a dialogue answer or a puzzle tile'],
      ['Tab / Shift+Tab', 'Move between buttons'],
      ['Enter or Space', 'Press the selected button or tile'],
-     ['Arrow keys', 'Move around puzzle grids and turn dials'],
+     ['Arrow keys', 'Move between tiles in grid puzzles and change the shift in the decoder'],
      ['Journal button', 'Read the clues and notes you have found'],
      ['Esc', 'Close How to play or the Journal'],
      ['Menu button', 'Return to the title screen (progress is kept)']].forEach(function (row) {
@@ -214,7 +214,8 @@
     var chapter = CHAPTERS[lvl.chapter];
     screen.appendChild(el('p', { 'class': 'lead' }, chapter.title));
     screen.appendChild(el('p', {}, outcome(lvl.chapter).text));
-    if (chapter.nextStop) screen.appendChild(el('p', {}, chapter.nextStop));
+    var nextStop = outcome(lvl.chapter).nextStop || chapter.nextStop;
+    if (nextStop) screen.appendChild(el('p', {}, nextStop));
     screen.appendChild(el('p', {}, rankText()));
     screen.appendChild(btn('Continue', function () {
       if (LEVELS[lvl.id]) enterLevel(lvl.id + 1);
@@ -348,13 +349,17 @@
     screen.appendChild(pic(lvl.image, lvl.imageAlt));
     screen.appendChild(el('p', { 'class': 'scene' }, lvl.intro));
     var log = el('ul', { 'class': 'log' });
-    logLines.forEach(function (line) { log.appendChild(el('li', {}, line)); });
+    logLines.forEach(function (line, i) {
+      var last = msg && i === logLines.length - 1;
+      log.appendChild(el('li', last ? { 'class': 'new' } : {}, line));
+    });
     screen.appendChild(log);
     showGoals(lvl);
     var box = el('div', { 'class': 'hotspots' });
     lvl.hotspots.forEach(function (h) {
       if ((h.needFlag && !S.flags[h.needFlag]) || (h.notFlag && S.flags[h.notFlag])) return;
       if (h.needAll && !h.needAll.every(function (flag) { return S.flags[flag]; })) return;
+      if (h.puzzle && S.flags[h.setFlag]) return; // solved puzzles stay solved
       box.appendChild(btn(h.label, function () { use(lvl, h); }));
     });
     screen.appendChild(box);
@@ -409,9 +414,12 @@
       v.choices.forEach(function (choice, i) {
         var label = choice.locked ? choice.text + '  [' + choice.reason + ']' : choice.text;
         var button = btn(label, function () {
-          if (Dialogue.choose(dialogue, i)) { State.save(S); turn(); }
+          if (!Dialogue.choose(dialogue, i)) return;
+          State.save(S);
+          // A closing choice (no next line) goes straight back to the room instead of repeating the last line.
+          if (dialogue.ended) play(); else turn();
         }, choice.locked ? 'locked' : '');
-        button.disabled = choice.locked;
+        if (choice.locked) button.setAttribute('aria-disabled', 'true');
         panel.appendChild(button);
       });
       if (v.end) panel.appendChild(btn('Done', function () { play(); }));

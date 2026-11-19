@@ -109,7 +109,7 @@
     }
 
     function press(letter) {
-      if (stopped || solving || seq.length >= 4) return;
+      if (stopped || solving || seq.length >= 4 || seq.indexOf(letter) !== -1) return;
       seq.push(letter);
       paint();
       if (seq.length < 4) {

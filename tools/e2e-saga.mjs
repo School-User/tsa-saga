@@ -69,7 +69,7 @@ await sleep(2200);
 await goalCount(1);
 await check(`['ENG 4','SCI 4','EMP 4'].every(stat=>document.querySelector('.stat-help').textContent.includes(stat))`,'Life Support explains the three stat unlocks');
 await step('Ask ORI to open the lab');
-await check(`[...document.querySelectorAll('button:disabled')].some(b=>b.textContent.includes('[EMP 4 needed]'))`,'ORI shows locked stat thresholds');
+await check(`[...document.querySelectorAll('button[aria-disabled=true]')].some(b=>b.textContent.includes('[EMP 4 needed]'))`,'ORI shows locked stat thresholds');
 await step('Say nothing'); await step('"I will be'); await step('Done');
 await goalCount(2);
 await step('+SCI');
@@ -84,7 +84,7 @@ await check(`document.querySelector('#game section [role=status]').textContent =
 for(let i=0;i<6;i++) await A.ev(`[...document.querySelectorAll('#game section button')].find(b=>b.textContent.trim()==='+')?.click()`);
 await check(`document.querySelectorAll('.cipher-map code')[1].textContent[11] === 'E'`,'Live mapping updates with the shift');
 await step('Transmit'); await sleep(2500);
-await step('Answer the signal'); await step('"I am answering'); await step('"I will carry'); await step('Set course together'); await step('Close the channel'); await step('Done');
+await step('Answer the signal'); await step('"I am answering'); await step('"I will carry'); await step('Set course together'); await step('Close the channel');
 await step('Set course'); console.log('CH1 DONE:',await text());
 await check(`document.querySelector('#game').textContent.includes('The Veil comes aboard') && document.querySelector('#game').textContent.includes('next destination, Harbor Nine')`,'Meridian card shows the choice consequence and next destination');
 await step('Continue');
@@ -110,7 +110,7 @@ await step('Confirm'); await sleep(2500); await step('Take the lift'); console.l
 await step('Tune the beacon');
 await A.ev(`(()=>{const r=[...document.querySelectorAll('#game input[type=range]')];const set=(i,v)=>{r[i].value=v;r[i].dispatchEvent(new Event('input',{bubbles:true}));r[i].dispatchEvent(new Event('change',{bubbles:true}))};set(0,6);set(1,3)})()`);
 await step('Lock in'); await sleep(2500);
-await step('Speak to the captains'); await step('"One at a time'); await step('Guide them in'); await step('Close the channel'); await step('Done');
+await step('Speak to the captains'); await step('"One at a time'); await step('Guide them in'); await step('Close the channel');
 await step('Send the all-clear'); console.log('CH2 DONE:',await text());
 await step('Continue');
 // ---- chapter 3
@@ -130,7 +130,7 @@ let q=[[start,[]]];const seen=new Set([start]);let sol=null;
 while(q.length&&!sol){const [s,p]=q.shift();if(s===goal){sol=p;break}const z=s.indexOf('0');for(const m of 'UDLR'){if(!ok(z,m))continue;const a=s.split('');const t=a[z+mv[m]];[a[z],a[z+mv[m]]]=[a[z+mv[m]],a[z]];const n=a.join('');if(!seen.has(n)){seen.add(n);q.push([n,[...p,t]])}}}
 for(const t of sol){await A.ev(`${grid()}.find(b=>(b.getAttribute('aria-label')||'').startsWith('Tile ${t},'))?.click()`);await sleep(60)}
 await sleep(2500);
-await step('Speak with Fern'); await step('"Replant'); await step('Begin replanting'); await step('Close the channel'); await step('Done');
+await step('Speak with Fern'); await step('"Replant'); await step('Begin replanting'); await step('Close the channel');
 await step('Leave the water room'); console.log('CH3 DONE:',await text());
 await step('Continue');
 console.log('FINALE:',await A.ev(`document.getElementById('game').innerText.replace(/\\n+/g,' / ').slice(0,900)`));

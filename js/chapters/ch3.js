@@ -61,7 +61,7 @@ window.Chapters[3] = {
       { text: 'Settle the argument', needFlag: 'crew_calm' } ],
     hotspots: [
       { id: 'look2', label: 'Read the notice board', text: 'Handwritten notes: "Cy does not tend Vine." "Not my house." "Bo, where are you?" The Moss house is wilting.', xp: 5 },
-      { id: 'quarrel', label: 'Calm the argument', dialogue: quarrel },
+      { id: 'quarrel', label: 'Calm the argument', notFlag: 'crew_calm', dialogue: quarrel },
       { id: 'p_assign', label: 'Fix the rota', puzzle: 'assign', setFlag: 'crew_set', xp: 30,
         text: 'The rota clicks into place. Three botanists, three greenhouses, no more quarrels.' },
       { id: 'door2', label: 'Go to the water room', needAll: ['crew_set', 'crew_calm'], exit: true } ] };

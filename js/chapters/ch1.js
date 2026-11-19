@@ -10,7 +10,8 @@ window.Chapters[1] = {
   endings: [
     { flag: 'ending_peace', text: 'The Veil comes aboard the Meridian and keeps ORI company on the voyage.' },
     { flag: 'ending_study', text: 'You carry a recording of the Veil so future navigators can hear its voice.' },
-    { flag: 'ending_quiet', text: 'The Veil stays behind and keeps broadcasting for the next listener.' } ],
+    { flag: 'ending_quiet', text: 'The Veil stays behind and keeps broadcasting for the next listener.',
+      nextStop: 'With no chart from the Veil, you plot the route to Harbor Nine yourself from the timing of its pulses.' } ],
   levels: []
 };
 
@@ -71,7 +72,7 @@ window.Chapters[1] = {
       { id: 'p_valves', label: 'Work the valves', puzzle: 'valves', setFlag: 'air_ok', xp: 30,
         text: 'The valves hiss open one after another. The gauge steadies and climbs. You can breathe.' },
       { id: 'log2', label: 'Read the maintenance log', xp: 5, text: 'Last entry, day 412: "Valve C first, always. Never B before the ring is full. Ask ORI nicely, it remembers kindness."' },
-      { id: 'lab', label: 'Ask ORI to open the lab', dialogue: lab },
+      { id: 'lab', label: 'Ask ORI to open the lab', notFlag: 'lab_open', dialogue: lab },
       { id: 'door2', label: 'Go to the lab', needAll: ['air_ok', 'lab_open'], exit: true } ] };
 })();
 
@@ -93,8 +94,10 @@ window.Chapters[1] = {
     study: { speaker: 'The Signal', text: 'A recording... a record. Yes, someone will hear us. That is almost the same as being found. Take our patterns with you.',
       choices: [ { text: 'Save the recording and set course.', next: 'fin', setFlag: 'ending_study' } ] },
     quiet: { speaker: 'The Signal', text: 'We understand. We will keep sending. Someone else will come.',
-      choices: [ { text: 'Turn away.', next: 'fin', setFlag: 'ending_quiet' } ] },
+      choices: [ { text: 'Turn away.', next: 'fin_quiet', setFlag: 'ending_quiet' } ] },
     fin: { speaker: 'The Signal', text: 'Before you go, here is our chart to Harbor Nine. Safe travels, Navigator.',
+      choices: [ { text: 'Close the channel.', setFlag: 'contacted' } ] },
+    fin_quiet: { speaker: 'The Signal', text: 'Go, then. We will not give our chart to someone who leaves. Find your own way, Navigator.',
       choices: [ { text: 'Close the channel.', setFlag: 'contacted' } ] } } };
 
   window.Chapters[1].levels[2] = { id: 3, title: 'The Signal',

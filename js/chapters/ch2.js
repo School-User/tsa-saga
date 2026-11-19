@@ -62,7 +62,7 @@ window.Chapters[2] = {
       { text: 'Get Pip to unlock the manifest', needFlag: 'manifest' } ],
     hotspots: [
       { id: 'look2', label: 'Look at the crates', text: 'Nine crates, all the same size and colour. Only a balance scale will tell them apart.', xp: 5 },
-      { id: 'pip', label: 'Talk to Pip', dialogue: pip },
+      { id: 'pip', label: 'Talk to Pip', notFlag: 'manifest', dialogue: pip },
       { id: 'p_scales', label: 'Use the balance scale', puzzle: 'scales', setFlag: 'cargo_ok', xp: 30,
         text: 'The heavy crate rolls onto the lifting rig, and the airlock to the tower slides open with a sigh.' },
       { id: 'door2', label: 'Take the lift to the tower', needAll: ['cargo_ok', 'manifest'], exit: true } ] };

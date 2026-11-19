@@ -131,7 +131,7 @@
 
     function label(t, on) {
       var fixed = t.type === 's' || t.type === 'd' || t.type === 'e';
-      return 'Row ' + (t.r + 1) + ', column ' + (t.c + 1) + ': ' + NAMES[t.type] + ', ' +
+      return 'Row ' + (t.r + 1) + ', column ' + (t.c + 1) + ': ' + NAMES[t.type] +
         (t.type === 'e' ? '' : ', connects ' + conns(t).map(function (d) { return ['north', 'east', 'south', 'west'][d]; }).join(' and ')) +
         ', ' + (on ? 'powered' : 'no power') + (hint && PATH[t.r + ',' + t.c] ? ', on the live route' : '') +
         (fixed ? '. Fixed.' : '. Press Enter or Space to rotate.');
