@@ -42,3 +42,7 @@ body[data-chapter="3"] { --accent: #6fdc8c; }
   from { opacity: 0; }
   to { opacity: 1; }
 }
+.controls { border-collapse: collapse; width: 100%; margin: .5rem 0 1rem; }
+.controls th, .controls td { text-align: left; padding: .4rem .6rem; border-bottom: 1px solid var(--line); vertical-align: top; }
+.controls th { white-space: nowrap; }
+@media (max-width: 480px) { .controls th { white-space: normal; } }

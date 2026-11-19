@@ -70,6 +70,7 @@
       screen.appendChild(btn('Continue', function () { S = saved; resume(); }));
     }
     screen.appendChild(btn('New game', create, saved ? 'ghost' : ''));
+    screen.appendChild(btn('How to play', function () { howTo(title); }, 'ghost'));
     if (saved) {
       var select = el('section', { 'aria-labelledby': 'chapter-select' });
       select.appendChild(el('h2', { id: 'chapter-select' }, 'Chapter select'));
@@ -88,6 +89,43 @@
       screen.appendChild(select);
     }
     screen.appendChild(el('p', { 'class': 'small' }, 'Progress saves in this browser.'));
+  }
+
+  // Goal, controls and systems on one screen. `back` returns to the screen that opened it.
+  function howTo(back) {
+    clear(S && LEVELS[S.level_id - 1] ? LEVELS[S.level_id - 1].chapter : 1);
+    var panel = el('section', { 'class': 'panel howto' });
+    panel.appendChild(el('h2', {}, 'How to play'));
+    panel.appendChild(el('p', {}, 'You are the Navigator of a survey fleet. Follow a quiet signal through 3 chapters and 9 levels. ' +
+      'There is no fighting: every level is solved by exploring, talking and solving a puzzle.'));
+    panel.appendChild(el('h3', {}, 'Goal of each level'));
+    var steps = el('ol');
+    ['Read the room and click the buttons to look at things and talk to the crew.',
+     'Find the clue for the puzzle. Clues are saved in the Journal.',
+     'Solve the puzzle to open the way to the next level.'].forEach(function (t) { steps.appendChild(el('li', {}, t)); });
+    panel.appendChild(steps);
+    panel.appendChild(el('h3', {}, 'Controls'));
+    var table = el('table', { 'class': 'controls' });
+    [['Mouse click or tap', 'Choose an action, a dialogue answer or a puzzle tile'],
+     ['Tab / Shift+Tab', 'Move between buttons'],
+     ['Enter or Space', 'Press the selected button or tile'],
+     ['Arrow keys', 'Move around puzzle grids and turn dials'],
+     ['Journal button', 'Read the clues and notes you have found'],
+     ['Menu button', 'Return to the title screen (progress is kept)']].forEach(function (row) {
+      var tr = el('tr');
+      tr.appendChild(el('th', { scope: 'row' }, row[0]));
+      tr.appendChild(el('td', {}, row[1]));
+      table.appendChild(tr);
+    });
+    panel.appendChild(table);
+    panel.appendChild(el('h3', {}, 'Stats and ranks'));
+    panel.appendChild(el('p', {}, 'Engineering fixes machines. Science reads data. Empathy reads people. ' +
+      'High stats unlock extra hints and dialogue choices. Greyed-out choices need a higher stat. ' +
+      'Looking around and solving puzzles earns XP. Each new rank gives you a point to add to any stat.'));
+    panel.appendChild(el('h3', {}, 'Choices'));
+    panel.appendChild(el('p', {}, 'Your choices change how each chapter ends. Every stat build can finish the game.'));
+    screen.appendChild(panel);
+    screen.appendChild(btn('Back', back));
   }
 
   function create() {
@@ -217,6 +255,7 @@
     meter.appendChild(el('span', { style: 'width:' + pct + '%' }));
     bar.appendChild(meter);
     bar.appendChild(btn('Journal', openJournal, 'ghost small journal-button'));
+    bar.appendChild(btn('How to play', function () { howTo(resume); }, 'ghost small'));
 
     if (inRoom && State.points(S) > 0) {
       var up = el('div', { 'class': 'levelup' }, 'Level up! Add a point ');
